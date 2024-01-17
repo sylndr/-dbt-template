@@ -1,0 +1,8 @@
+{
+    "project_name": "demo",       
+    "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '_') }}",
+    "project_dag_name":"{{ cookiecutter.project_name.lower().replace(' ', '_') }}",
+    "default_dataset": "Test_env",
+    "_profiles_file_name": "profiles"
+}
+  

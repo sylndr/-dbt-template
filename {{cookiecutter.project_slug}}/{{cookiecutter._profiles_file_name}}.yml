@@ -1,0 +1,12 @@
+{{cookiecutter.project_slug}}:
+  target: dev
+  outputs:
+    dev:
+      type: bigquery
+      method: service-account
+      keyfile: ./gcp/service_account.json
+      project: online-retail-410818
+      dataset: retail
+      threads: 1
+      timeout_seconds: 3600
+      location: US 
