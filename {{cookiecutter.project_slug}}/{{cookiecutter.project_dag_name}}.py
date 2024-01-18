@@ -1,54 +1,44 @@
-from airflow.decorators import dag, task
-from airflow.models.baseoperator import chain
 from datetime import datetime
-
 from pathlib import Path
-from cosmos.airflow.task_group import DbtTaskGroup
-from cosmos.constants import LoadMode
-from cosmos.config import ProjectConfig, RenderConfig, ProfileConfig
 
+from airflow.decorators import dag
+from airflow.models.baseoperator import chain
+from cosmos import DbtTaskGroup
+from cosmos.config import ProfileConfig, ProjectConfig, RenderConfig
+from cosmos.constants import LoadMode
+from cosmos.profiles import (
+    GoogleCloudServiceAccountDictProfileMapping,
+)
+
+base_directory = Path(__file__).parent.resolve()
+dbt_project_path = base_directory.joinpath("dbt").joinpath("{{cookiecutter.project_slug}}").resolve()
+profile_config = ProfileConfig(
+    profile_name="{{cookiecutter.project_slug}}",
+    target_name="reporting",
+    profile_mapping=GoogleCloudServiceAccountDictProfileMapping(  # type: ignore
+        conn_id="BIG_QUERY_DBT_CONN",
+    ),
+)
+
+project_config = ProjectConfig(
+    dbt_project_path=dbt_project_path,
+)
 
 @dag(
+    dag_id="{{cookiecutter.project_slug}}_models_refresh",
     start_date=datetime(2023, 1, 1),
     schedule=None,
     catchup=False,
-    tags=['retail', 'dbt'],
+    tags=['dbt', '{{cookiecutter.project_slug}}'],
 )
-def {{cookiecutter.project_slug}}():
-
+def {{cookiecutter.project_slug}}_models_refresh_function():
     transform = DbtTaskGroup(
-        group_id='transform',
-        project_config=ProjectConfig(
-            dbt_project_path='/opt/airflow/dags/dbt/{{cookiecutter.project_slug}}/',
-        ),
-        profile_config=ProfileConfig(
-            profile_name='{{cookiecutter.project_slug}}',
-            target_name='dev',
-            profiles_yml_filepath=Path('/opt/airflow/dags/dbt/{{cookiecutter.project_slug}}/{{cookiecutter._profiles_file_name}}.yml')
-        ),
+        group_id="transform",
+        project_config=project_config,
+        profile_config=profile_config,
         render_config=RenderConfig(
-            load_method=LoadMode.DBT_LS,
-            select=['path:models/transform']
-        )
-    )
-    report = DbtTaskGroup(
-        group_id='report',
-            project_config=ProjectConfig(
-                dbt_project_path='/opt/airflow/dags/dbt/{{cookiecutter.project_slug}}/',
-            ),
-        profile_config=ProfileConfig(
-            profile_name='{{cookiecutter.project_slug}}',
-            target_name='dev',
-            profiles_yml_filepath=Path('/opt/airflow/dags/dbt/{{cookiecutter.project_slug}}/{{cookiecutter._profiles_file_name}}.yml')
+            load_method=LoadMode.DBT_LS, select=["path:models"]
         ),
-        render_config=RenderConfig(
-            load_method=LoadMode.DBT_LS,
-            select=['path:models/report']
-        )
     )
 
-    chain(
-        transform,
-        report
-    )
-{{cookiecutter.project_slug}}()
+    transform # type: ignore
