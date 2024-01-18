@@ -14,7 +14,7 @@ base_directory = Path(__file__).parent.resolve()
 dbt_project_path = base_directory.joinpath("dbt").joinpath("{{cookiecutter.project_slug}}").resolve()
 profile_config = ProfileConfig(
     profile_name="{{cookiecutter.project_slug}}",
-    target_name="reporting",
+    target_name="{{cookiecutter.default_dataset}}",
     profile_mapping=GoogleCloudServiceAccountDictProfileMapping(  # type: ignore
         conn_id="BIG_QUERY_DBT_CONN",
     ),
@@ -25,13 +25,13 @@ project_config = ProjectConfig(
 )
 
 @dag(
-    dag_id="{{cookiecutter.project_slug}}_models_refresh",
+    dag_id="{{cookiecutter.project_dag_name}}",
     start_date=datetime(2023, 1, 1),
     schedule=None,
     catchup=False,
     tags=['dbt', '{{cookiecutter.project_slug}}'],
 )
-def {{cookiecutter.project_slug}}_models_refresh_function():
+def {{cookiecutter.project_dag_name}}_function():
     transform = DbtTaskGroup(
         group_id="transform",
         project_config=project_config,
