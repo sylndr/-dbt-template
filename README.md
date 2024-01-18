@@ -7,7 +7,7 @@ If you have not already setup your environment, please follow the steps [here](d
 
 2. On terminal, run the following command 
     ```
-    cookiecutter https://github.com/sylndr/-dbt-template.git 
+    cookiecutter https://github.com/sylndr/dbt-template.git 
     ```
 
 3. A directory will be created as a result of the above step containing all scafolding files and folders. you can now open an editor and see what is there.
