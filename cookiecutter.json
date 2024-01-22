@@ -3,5 +3,8 @@
     "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '_') }}",
     "project_dag_name": "{{ cookiecutter.project_name.lower().replace(' ', '_') }}",
     "default_dataset": "test_env",
-    "_profiles_file_name": "profiles"
+    "_profiles_file_name": "profiles",
+    "_copy_without_render": [
+        "generate_schema_name.sql"
+    ]
 }
