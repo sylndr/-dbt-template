@@ -42,3 +42,5 @@ def {{cookiecutter.project_dag_name}}_function():
     )
 
     transform # type: ignore
+
+{{cookiecutter.project_dag_name}}_function()
