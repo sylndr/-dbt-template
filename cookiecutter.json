@@ -5,6 +5,6 @@
     "default_dataset": "test_env",
     "_profiles_file_name": "profiles",
     "_copy_without_render": [
-        "generate_schema_name.sql"
+        "macros/*.sql"
     ]
 }
