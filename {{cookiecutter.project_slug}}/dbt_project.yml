@@ -12,6 +12,7 @@ model-paths: ["models"]
 analysis-paths: ["analyses"]
 test-paths: ["tests"]
 macro-paths: ["macros"]
+target-path: target
 
 clean-targets: # directories to be removed by `dbt clean`
   - "target"
@@ -20,3 +21,4 @@ clean-targets: # directories to be removed by `dbt clean`
 models:
   {{cookiecutter.project_slug}}:
     +materialized: view
+    +schema: {{cookiecutter.default_dataset}}
