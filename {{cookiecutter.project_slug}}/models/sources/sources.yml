@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: dateset_name
+    database: pricing-338819
+    tables:
+      - name: table_name
