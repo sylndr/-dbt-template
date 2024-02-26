@@ -18,5 +18,5 @@ clean-targets: # directories to be removed by `dbt clean`
   - "dbt_packages"
 
 models:
-  { { cookiecutter.project_slug } }:
+  {{cookiecutter.project_slug}}:
     +materialized: view
