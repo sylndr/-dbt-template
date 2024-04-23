@@ -4,7 +4,7 @@
     dev:
       type: bigquery
       method: service-account
-      keyfile: ./gcp/service_account.json
+      keyfile: ~/.config/gcloud/application_default_credentials.json
       project: pricing-338819
       dataset: {{cookiecutter.default_dataset}}
       threads: 1
